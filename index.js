@@ -2,66 +2,86 @@
 const fs = require("fs");
 //requires node inquirer
 const inquirer = require("inquirer");
+
+const path = require("path");
 //loads generateMarkdown file in utils
-const generateHTML = require("./generateHTML.js")
+const { Manager, Employee, Intern, Engineer } = require("./lib")
+
+const employees = [];
 
 //array of questions
 const questions = [
-{
-    type: "input",
-    name: "title",
-    message: "What is your project title?"
-},
-{
-    type: "input",
-    name: "email",
-    message: "Please enter your email address."
-},
-{
-    type: "input",
-    name: "github",
-    message: "Please enter your GitHub username."
-},
-{
-    type: "input",
-    name: "description",
-    message: "Please enter a description of your project."
-},
-{
-    type: "input",
-    name: "installation",
-    message: "Please enter any installation instructions."
-},
-{
-    type: "input",
-    name: "usage",
-    message: "Please enter any usage information."
-},
-{
-    type: "input",
-    name: "contributionGuidelines",
-    message: "Please enter any contribution guidelines."
-},
-{
-    type: "list",
-    name: "license",
-    message: "Please select the the project license.",
-    //choices separated by line
-    choices: ["MIT", new inquirer.Separator(), "BSD", new inquirer.Separator(), "Apache", new inquirer.Separator(), "GPL"]
-},
-{
-    type: "input",
-    name: "test",
-    message: "Please enter any test instructions."
-},
-
+    {
+        type: "input",
+        name: "name",
+        message: "What is your name?"
+    },
+    {
+        type: "input",
+        name: "id",
+        message: "Please enter an id."
+    },
+    {
+        type: "input",
+        name: "email",
+        message: "Please enter your email address."
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "Please enter your office number."
+    }
 ];
+
+
 
 
 // function to initialize app
 function init() {
     //prints answer object
-    inquirer.prompt(questions).then(answers => {
+    inquirer.prompt(questions)
+    .then(manager => {
+        const { name, id, email, officeNumber } = manager
+        const manager = new Manager(name, id, email, officeNumber)
+        employees.push(manager)
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employeeRole',
+                message: 'What type of employee would you like to create?',
+                choices: ['Engineer', 'Intern']
+            }
+        ])
+        .then(employee => {
+            switch(employee.employeeRole){
+                case 'Intern':
+                    inquirer.prompt([
+                        {
+                            type: "input",
+                            name: "school",
+                            message: "What school do you attend?"
+                        }
+                    ])
+                    .then(intern => {
+                        const intern = new Intern()
+                    })
+                    break;
+
+                case 'Engineer':
+                    inquirer.prompt([
+                        {
+                            type: "input",
+                            name: "github",
+                            message: "Please enter your GitHub username."
+
+                        }
+                    ])
+                    break;
+            }
+        })
+
+
+
         console.log('ANSWERS OBJECT -> ', answers)
         //writes new readme file with object as content
        const content = generateHTML(answers)

@@ -1,0 +1,31 @@
+{
+  "name": "teamprofilegenerator",
+  "version": "1.0.0",
+  "description": "Generates HTML file with profiles for inputted employees.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panicor/teamProfileGenerator.git"
+  },
+  "keywords": [
+    "generator"
+  ],
+  "author": "Rachel Panico",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/panicor/teamProfileGenerator/issues"
+  },
+  "homepage": "https://github.com/panicor/teamProfileGenerator#readme",
+  "dependencies": {
+    "inquirer": "^8.1.2"
+  },
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
