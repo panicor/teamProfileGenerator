@@ -2,160 +2,140 @@
 const fs = require("fs");
 //requires node inquirer
 const inquirer = require("inquirer");
-
-const path = require("path");
 //loads generateMarkdown file in utils
-const { Manager, Employee, Intern, Engineer } = require("./lib")
+const { Manager, Intern, Engineer, Employee } = require("./lib/index.js");
+
+const generateHTML = require("./src/generateHTML");
 
 let employees = [];
 
-
 // function to initialize app
-function init() {
-    //prints answer object
-     inquirer.prompt([
-            
-                {
-                    type: "input",
-                    name: "name",
-                    message: "What is your name?"
-                },
-                {
-                    type: "input",
-                    name: "id",
-                    message: "Please enter an id."
-                },
-                {
-                    type: "input",
-                    name: "email",
-                    message: "Please enter your email address."
-                },
-                {
-                    type: "input",
-                    name: "officeNumber",
-                    message: "Please enter your office number."
-                }
-                
-        ])
-        .then(employee => {
-        const { name, id, email, officeNumber } = employee;
-        const manager = new Manager(name, id, email, officeNumber)
-        employees.push(manager)
-       
-        .then(employee => {
-            switch(employee.employeeRole){
-                case 'Intern':
-                    addIntern(employee);
-                    break;
+init = () => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "employeeRole",
+        message: "What type of employee would you like to create?",
+        choices: ["Manager", "Engineer", "Intern"],
+      },
+      {
+        type: "input",
+        name: "name",
+        message: "What is their name?",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Please enter their id.",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter their email address.",
+      },
+    ])
+    .then((employee) => {
+      switch (employee.employeeRole) {
+        case "Manager":
+          addManager(employee);
+          break;
 
-                case 'Engineer':
-                    addEngineer(employee);
-                    break;
-            }
-        })
+        case "Intern":
+          addIntern(employee);
+          break;
 
+        case "Engineer":
+          addEngineer(employee);
+          break;
+      }
+    });
+};
+
+addManager = (answers) => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Please enter your office number.",
+      },
+    ])
+    .then((officeNumber) => {
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        officeNumber.officeNumber
+      );
+      employees.push(manager);
+      addEmployee();
+    });
+};
 
 addIntern = (answers) => {
-   inquirer.prompt([
-    {
-        type: "input",
-        name: "name",
-        message: "What is your intern's name?"
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "Please enter an intern id."
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Please enter your intern's email address."
-    },
-   
-    {
+  inquirer
+    .prompt([
+      {
         type: "input",
         name: "school",
-        message: "What school does your intern attend?"
-    }
-])
-.then(school => {
-    const intern = new Intern(answers.name, asnwers.id, answers.email, school.school)
-    employees.push(intern);
-    addEmployee();
-}) 
-}
-
-
+        message: "What school does your intern attend?",
+      },
+    ])
+    .then((school) => {
+      const intern = new Intern(
+        answers.name,
+        answers.id,
+        answers.email,
+        school.school
+      );
+      employees.push(intern);
+      addEmployee();
+    });
+};
 
 addEngineer = (answers) => {
-    inquirer.prompt([
-    {
-        type: "input",
-        name: "name",
-        message: "What is your engineer's name?"
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "Please enter an engineer id."
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "Please enter your engineer's email address."
-    },
-    {
+  inquirer
+    .prompt([
+      {
         type: "input",
         name: "github",
-        message: "Please enter your engineer's GitHub username."
-
-    }
-])
-.then(github => {
-    const engineer = new Engineer(answers.name, answers.id, answers.email, github.github)
-    employees.push(engineer);
-    addEmployee();
-})
-}
+        message: "Please enter your engineer's GitHub username.",
+      },
+    ])
+    .then((github) => {
+      const engineer = new Engineer(
+        answers.name,
+        answers.id,
+        answers.email,
+        github.github
+      );
+      employees.push(engineer);
+      addEmployee();
+    });
+};
 
 addEmployee = () => {
-    inquirer.prompt([
-    {
-        type: 'list',
-        name: 'employeeRole',
-        message: 'What type of employee would you like to create?',
-        choices: ['Engineer', 'Intern', 'None']
-    }
-
-])
-.then(answers => {
-    if (answers.employeeRole === 'Engineer'){
-      addEngineer();
-    }
-    else if (answers.employeeRole === 'Intern'){
-      addIntern();
-    }
-    else {
-        console.log('ANSWERS OBJECT -> ', answers)
-        //writes new readme file with object as content
-       const content = generateHTML(answers)
-       fs.writeFile("answers.html", content, err =>{
-           //throws error if error
-        if (err){
-               console.error(err);
-               return
-           }
-           console.log("HTML created successfully");
-       }
-       )
-    
-    };
-})
-
-}
-})
-}
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "addEmployee",
+        message: "Would you like to create another employee?",
+        choices: ["Yes", "No"],
+      },
+    ])
+    .then((answers) => {
+      if (answers.addEmployee === "Yes") {
+        init();
+      } else {
+        const content = generateHTML(employees);
+        fs.writeFile("answers.html", content, (err) => {
+          err ? console.log(err) : console.log("HTML created successfully");
+        });
+      }
+    });
+};
 
 // Function call to initialize app
 init();
