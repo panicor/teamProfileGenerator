@@ -1,9 +1,9 @@
-const { test, expect} = require("@jest/globals");
-const Engineer = require ("../lib/Engineer");
+const { test, expect } = require("@jest/globals");
+const Engineer = require("../lib/Engineer");
 
 test("Can instantiante new Engineer instance", () => {
-    const e = new Engineer();
-    expect(typeof(e)).toBe("object");
+  const e = new Engineer();
+  expect(typeof e).toBe("object");
 });
 
 test("Can set GitHub username via constructor", () => {

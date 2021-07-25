@@ -1,6 +1,6 @@
 const generateHTML = (employees) => {
-
   let cards = employees.map((employee) => {
+
     if (employee.constructor.name === "Manager") {
       return `<div class = "card col-4">
            <h2>${employee.name}</h2>
@@ -10,8 +10,10 @@ const generateHTML = (employees) => {
                 <li>Email: <a href = "mailto:${employee.email}">${employee.email}</a></li>
                 <li>Office Number: ${employee.officeNumber}</li>
             <ul>
-        <div>`;
-    } else if (employee.constructor.name === "Engineer") {
+        </div>`
+    } 
+
+    else if (employee.constructor.name === "Engineer") {
       return `<div class = "card col-4">
         <h2>${employee.name}</h2>
         <h3>Engineer <i class="fas fa-glasses"></i></h3>
@@ -20,8 +22,10 @@ const generateHTML = (employees) => {
              <li>Email: <a href = "mailto:${employee.email}">${employee.email}</a></li>
              <li>GitHub: <a href="https://github.com/${employee.github}" target = "_blank">${employee.github}</a></li>
          <ul>
-     <div>`;
-    } else if (employee.constructor.name === "Intern") {
+     </div>`
+    } 
+
+    else if (employee.constructor.name === "Intern") {
       return `<div class = "card col-4">
         <h2>${employee.name}</h2>
         <h3>Intern <i class="fas fa-glasses"></i></h3>
@@ -30,9 +34,9 @@ const generateHTML = (employees) => {
              <li>Email: <a href = "mailto:${employee.email}">${employee.email}</a></li>
              <li>School: ${employee.school}</li>
          <ul>
-     <div>`;
+     </div>`
     }
-  });
+  })
 
   const htmlContent = `<html>
 <head>
@@ -57,9 +61,9 @@ const generateHTML = (employees) => {
                </div>
              </div>
         </body>
-      </html>`;
+      </html>`
 
   return htmlContent;
-}
+};
 
 module.exports = generateHTML;

@@ -31,4 +31,8 @@
 
   rachelpanico@hotmail.com
 
+Repo link:
 https://github.com/panicor/teamProfileGenerator
+
+Video link:
+https://drive.google.com/file/d/1EEbuQIO29Aeqf429YQne70gaexWI-NHM/view
