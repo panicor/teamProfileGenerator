@@ -1,4 +1,5 @@
 const generateHTML = (employees) => {
+
   let cards = employees.map((employee) => {
     if (employee.constructor.name === "Manager") {
       return `<div class = "card col-4">
@@ -59,6 +60,6 @@ const generateHTML = (employees) => {
       </html>`;
 
   return htmlContent;
-};
+}
 
 module.exports = generateHTML;

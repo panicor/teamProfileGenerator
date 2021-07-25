@@ -130,7 +130,7 @@ addEmployee = () => {
         init();
       } else {
         const content = generateHTML(employees);
-        fs.writeFile("answers.html", content, (err) => {
+        fs.writeFile("./dist/answers.html", content, (err) => {
           err ? console.log(err) : console.log("HTML created successfully");
         });
       }

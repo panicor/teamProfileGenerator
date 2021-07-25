@@ -1,7 +1,7 @@
 const { test, expect} = require("@jest/globals");
 const Manager = require ("../lib/Manager");
 
-test("Can istantiante new Manager instance", () => {
+test("Can instantiante new Manager instance", () => {
     const e = new Manager();
     expect(typeof(e)).toBe("object");
 })
